@@ -6,5 +6,8 @@ This would be manual program where you could learn about the nomenclature of top
 - Statistic
 - Options in test mode
 ## Done
-- Test mode
+- Nomenclature generation
 - Check mode
+	- On click navigation
+- Test mode
+	- Chouse map scale
