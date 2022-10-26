@@ -73,9 +73,36 @@ class MapLevel:
             return str(chr(val + ord('А') - 1))
         if self.encoding == 'abcd':
             return str(chr(val + ord('а') - 1))
+        if self.encoding == 'XVI':
+            return to_roman(val)
         return val
 
     
+
+def to_roman(num):
+    ones = ["","I","II","III","IV","V","VI","VII","VIII","IX"]
+    tens = ["","X","XX","XXX","XL","L","LX","LXX","LXXX","XC"]
+    
+    te = tens[num // 10 % 10]
+    o =  ones[num % 10]
+    
+    return te+o
+
+def to_arabic(s):
+    d = {
+        'X':10,
+        'V':5,
+        'I':1
+    }
+    prev = 0
+    ans = 0
+    for c in reversed(s):
+        if prev > d[c]:
+            ans -= d[c]
+        else:
+            ans += d[c]
+        prev = d[c]
+    return ans
 
 def print_levels(lvls):
     r = ''
@@ -89,7 +116,7 @@ def generate(word):
     global ent
     data = re.split(' |-', word)
     ind = 0
-    global millionka_l, millionka_n, sotka, pesyatka, dvatspyatka, karta
+    global millionka_l, millionka_n, dvuhsotka, sotka, pesyatka, dvatspyatka, karta
     karta = []
     for c in data:
         if ind == 0:
@@ -100,8 +127,12 @@ def generate(word):
                                    prev_y=millionka_l, changable_y=False)
             d = millionka_n
         elif ind == 2:
-            sotka = MapLevel(12, None, int(c), prev_x=millionka_n, prev_y=millionka_l)
-            d = sotka
+            if ('X' in c) or ('V' in c) or ('I' in c):
+                dvuhsotka = MapLevel(6, 'XVI', to_arabic(c), prev_x=millionka_n, prev_y=millionka_l)
+                d = dvuhsotka
+            else:
+                sotka = MapLevel(12, None, int(c), prev_x=millionka_n, prev_y=millionka_l)
+                d = sotka
         elif ind == 3:
             pesyatka = MapLevel(2, 'ABCD', (ord(c)-ord('А')+1), prev_level=sotka)
             d = pesyatka
@@ -245,7 +276,7 @@ def generateKey(ind):
     if ind >= 1:
         keyComponents.append(str(rand.randint(1, 60)))
     if ind == 2:
-        keyComponents.append(str(rand.randint(1, 36)))
+        keyComponents.append(to_roman(rand.randint(1, 36)))
     if ind >= 3:
         keyComponents.append(str(rand.randint(1, 144)))
     if ind >= 4:
