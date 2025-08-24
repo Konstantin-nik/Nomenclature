@@ -1,5 +1,5 @@
 # Nomenclature
-This would be manual program where you could learn about the nomenclature of topographic maps.
+Software for teaching students how to work with nomenclature and testing their acquired skills.
 ## Todo
 - Arrow navigation in the Test mode
 - Print a map scale in the Check mode
